@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useMatch } from "@tanstack/react-router";
 import { BookOpen, Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -10,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function MainNav() {
-  const pathname = usePathname();
+  const match = useMatch({ from: "/" });
+  const pathname = match.pathname;
   const [isOpen, setIsOpen] = React.useState(false);
 
   const routes = [
@@ -33,7 +33,7 @@ export function MainNav() {
 
   return (
     <div className="flex gap-6 md:gap-10">
-      <Link href="/" className="hidden items-center space-x-2 md:flex">
+      <Link to="/" className="hidden items-center space-x-2 md:flex">
         <BookOpen className="h-6 w-6" />
         <span className="hidden font-bold sm:inline-block">
           LearningPlatform
@@ -51,18 +51,18 @@ export function MainNav() {
         </SheetTrigger>
         <SheetContent side="left" className="pr-0">
           <Link
-            href="/"
+            to="/"
             className="flex items-center space-x-2"
             onClick={() => setIsOpen(false)}
           >
             <BookOpen className="h-6 w-6" />
-            <span className="font-bold">LearningPlatform</span>
+            <span className="font-bold">Learning Platform</span>
           </Link>
           <div className="my-4 flex flex-col space-y-3">
             {routes.map((route) => (
               <Link
                 key={route.href}
-                href={route.href}
+                to={route.href}
                 className={cn(
                   "text-muted-foreground transition-colors hover:text-foreground",
                   route.active ? "text-foreground" : "text-muted-foreground",
@@ -79,7 +79,7 @@ export function MainNav() {
         {routes.map((route) => (
           <Link
             key={route.href}
-            href={route.href}
+            to={route.href}
             className={cn(
               "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
               route.active ? "text-foreground" : "text-foreground/60",

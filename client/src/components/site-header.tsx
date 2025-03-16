@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "@tanstack/react-router";
 import { MainNav } from "@/components/main-nav";
 import { Button } from "@/components/ui/button";
 
@@ -10,12 +9,12 @@ export function SiteHeader() {
         <MainNav />
         <div className="ml-auto flex items-center space-x-4">
           <nav className="flex items-center space-x-2">
-            <Link href="/login">
+            <Link to="/login">
               <Button variant="ghost" size="sm">
                 Login
               </Button>
             </Link>
-            <Link href="/register">
+            <Link to="/register">
               <Button size="sm">Sign Up</Button>
             </Link>
           </nav>

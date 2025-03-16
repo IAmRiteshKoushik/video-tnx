@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
 import {
   DropdownMenu,
@@ -23,12 +23,12 @@ export function UserNav() {
   if (!isLoggedIn) {
     return (
       <div className="flex items-center gap-2">
-        <Link href="/login">
+        <Link to="/login">
           <Button variant="ghost" size="sm">
             Login
           </Button>
         </Link>
-        <Link href="/register">
+        <Link to="/register">
           <Button size="sm">Sign Up</Button>
         </Link>
       </div>
@@ -58,19 +58,17 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link to="/dashboard/student">Dashboard</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/profile">Profile</Link>
-          </DropdownMenuItem>
+          {/* @ts-ignore */}
           {userRole === "educator" && (
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/courses">My Courses</Link>
+              <Link to="/dashboard/educator">My Courses</Link>
             </DropdownMenuItem>
           )}
           {userRole === "student" && (
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/enrolled">My Learning</Link>
+              <Link to="/dashboard/student/enrolled">My Learning</Link>
             </DropdownMenuItem>
           )}
         </DropdownMenuGroup>
