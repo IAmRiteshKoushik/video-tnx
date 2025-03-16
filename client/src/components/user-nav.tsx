@@ -1,5 +1,3 @@
-"use client";
-
 import { User } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 

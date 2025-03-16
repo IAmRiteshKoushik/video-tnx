@@ -1,33 +1,22 @@
-"use client";
-
-import * as React from "react";
-import { Link, useMatch } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { BookOpen, Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 
 export function MainNav() {
-  const match = useMatch({ from: "/" });
-  const pathname = match.pathname;
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const routes = [
     {
       href: "/",
       label: "Home",
-      active: pathname === "/",
     },
     {
       href: "/courses",
       label: "Courses",
-      active: pathname === "/courses",
-    },
-    {
-      href: "/about",
-      label: "About",
-      active: pathname === "/about",
     },
   ];
 
@@ -65,7 +54,6 @@ export function MainNav() {
                 to={route.href}
                 className={cn(
                   "text-muted-foreground transition-colors hover:text-foreground",
-                  route.active ? "text-foreground" : "text-muted-foreground",
                 )}
                 onClick={() => setIsOpen(false)}
               >
@@ -82,7 +70,6 @@ export function MainNav() {
             to={route.href}
             className={cn(
               "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-              route.active ? "text-foreground" : "text-foreground/60",
             )}
           >
             {route.label}
