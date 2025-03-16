@@ -24,74 +24,6 @@ export const Route = createFileRoute("/courses/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/courses/"!</div>;
-}
-
-// Mock data for courses
-const courses = [
-  {
-    id: 1,
-    title: "Introduction to Web Development",
-    description: "Learn the basics of HTML, CSS, and JavaScript",
-    instructor: "Jane Smith",
-    category: "Development",
-    level: "Beginner",
-    students: 1245,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-  {
-    id: 2,
-    title: "Advanced React Patterns",
-    description: "Master advanced React concepts and patterns",
-    instructor: "John Doe",
-    category: "Development",
-    level: "Advanced",
-    students: 843,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-  {
-    id: 3,
-    title: "Data Science Fundamentals",
-    description: "Introduction to data analysis and visualization",
-    instructor: "Sarah Johnson",
-    category: "Data Science",
-    level: "Intermediate",
-    students: 976,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-  {
-    id: 4,
-    title: "UX/UI Design Principles",
-    description: "Learn the core principles of user experience design",
-    instructor: "Michael Chen",
-    category: "Design",
-    level: "Beginner",
-    students: 654,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-  {
-    id: 5,
-    title: "Machine Learning Basics",
-    description: "Introduction to machine learning algorithms",
-    instructor: "Alex Rodriguez",
-    category: "Data Science",
-    level: "Intermediate",
-    students: 1089,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-  {
-    id: 6,
-    title: "Mobile App Development with Flutter",
-    description: "Build cross-platform mobile apps with Flutter",
-    instructor: "Emily Wilson",
-    category: "Development",
-    level: "Intermediate",
-    students: 732,
-    image: "/placeholder.svg?height=220&width=400",
-  },
-];
-
-export default function CoursesPage() {
   return (
     <div className="container py-10">
       <div className="flex flex-col space-y-6">
@@ -147,7 +79,7 @@ export default function CoursesPage() {
           {courses.map((course) => (
             <Card key={course.id} className="overflow-hidden">
               <div className="aspect-video w-full overflow-hidden">
-                <Image
+                <img
                   src={course.image || "/placeholder.svg"}
                   alt={course.title}
                   width={400}
@@ -174,7 +106,7 @@ export default function CoursesPage() {
                 </p>
               </CardContent>
               <CardFooter>
-                <Link href={`/courses/${course.id}`} className="w-full">
+                <Link to={`/courses/${course.id}`} className="w-full">
                   <Button className="w-full">Enroll Now</Button>
                 </Link>
               </CardFooter>
@@ -185,3 +117,67 @@ export default function CoursesPage() {
     </div>
   );
 }
+
+// Mock data for courses
+const courses = [
+  {
+    id: 1,
+    title: "Introduction to Web Development",
+    description: "Learn the basics of HTML, CSS, and JavaScript",
+    instructor: "Jane Smith",
+    category: "Development",
+    level: "Beginner",
+    students: 1245,
+    image: "intro-web.jpg",
+  },
+  {
+    id: 2,
+    title: "Advanced React Patterns",
+    description: "Master advanced React concepts and patterns",
+    instructor: "John Doe",
+    category: "Development",
+    level: "Advanced",
+    students: 843,
+    image: "adv-react.jpg",
+  },
+  {
+    id: 3,
+    title: "Data Science Fundamentals",
+    description: "Introduction to data analysis and visualization",
+    instructor: "Sarah Johnson",
+    category: "Data Science",
+    level: "Intermediate",
+    students: 976,
+    image: "data-sci.jpg",
+  },
+  {
+    id: 4,
+    title: "UX/UI Design Principles",
+    description: "Learn the core principles of user experience design",
+    instructor: "Michael Chen",
+    category: "Design",
+    level: "Beginner",
+    students: 654,
+    image: "ui-ux.jpg",
+  },
+  {
+    id: 5,
+    title: "Machine Learning Basics",
+    description: "Introduction to machine learning algorithms",
+    instructor: "Alex Rodriguez",
+    category: "Data Science",
+    level: "Intermediate",
+    students: 1089,
+    image: "ml.jpg",
+  },
+  {
+    id: 6,
+    title: "Mobile App Development with Flutter",
+    description: "Build cross-platform mobile apps with Flutter",
+    instructor: "Emily Wilson",
+    category: "Development",
+    level: "Intermediate",
+    students: 732,
+    image: "flutter.jpg",
+  },
+];

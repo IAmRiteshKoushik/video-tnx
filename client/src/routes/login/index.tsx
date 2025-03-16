@@ -25,10 +25,6 @@ export const Route = createFileRoute("/login/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/login/"!</div>;
-}
-
-export default function LoginPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [userRole, setUserRole] = useState("student");

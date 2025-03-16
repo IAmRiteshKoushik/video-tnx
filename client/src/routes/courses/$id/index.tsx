@@ -25,7 +25,7 @@ function RouteComponent() {
           <div className="md:col-span-2">
             <div className="aspect-video overflow-hidden rounded-lg">
               <img
-                src={course.image || "/placeholder.svg"}
+                src={course.image || "intro-web.jpg"}
                 alt={course.title}
                 width={800}
                 height={400}
@@ -182,17 +182,17 @@ const course = {
   title: "Introduction to Web Development",
   description:
     "Learn the basics of HTML, CSS, and JavaScript to build modern websites from scratch. This comprehensive course covers everything you need to know to start your journey as a web developer.",
-  instructor: "Jane Smith",
+  instructor: "Ritesh Koushik",
   instructorTitle: "Senior Web Developer",
   instructorBio:
-    "Jane has over 10 years of experience in web development and has worked with companies like Google and Facebook.",
+    "Ritesh has over 10 years of experience in web development and has worked with companies like Google and Facebook.",
   category: "Development",
   level: "Beginner",
   students: 1245,
   duration: "12 hours",
   lastUpdated: "January 2024",
-  image: "/placeholder.svg?height=400&width=800",
-  instructorImage: "/placeholder.svg?height=100&width=100",
+  image: "intro-web.jpg",
+  instructorImage: "https://avatars.githubusercontent.com/u/72215925?v=4",
   sections: [
     {
       title: "Getting Started with HTML",

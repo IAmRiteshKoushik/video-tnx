@@ -25,10 +25,6 @@ export const Route = createFileRoute("/register/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/register/"!</div>;
-}
-
-export default function RegisterPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [userRole, setUserRole] = useState("student");
