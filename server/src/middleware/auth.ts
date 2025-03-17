@@ -1,73 +1,69 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { prisma } from '../index';
-import { UserRole } from '@prisma/client';
+import type express from "express";
+import jwt from "jsonwebtoken";
+import { prisma } from "../index";
+import { UserRole } from "@prisma/client";
 
-// Extend Express Request type to include user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        email: string;
-        role: UserRole;
-      };
-    }
-  }
-}
-
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+export const authenticate = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
   try {
     const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Authentication required' });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Authentication required" });
     }
 
-    const token = authHeader.split(' ')[1];
-
+    const token = authHeader.split(" ")[1];
     if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return res.status(401).json({ message: "Authentication required" });
     }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: string;
       email: string;
       role: UserRole;
     };
 
-    // Check if user exists
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id }
+      where: { id: decoded.id },
     });
-
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: "User not found" });
     }
 
-    // Add user to request object
-    req.user = {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role
-    };
-
+    req.body.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid or expired token' });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
-export const authorizeEducator = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user || req.user.role !== UserRole.EDUCATOR && req.user.role !== UserRole.ADMIN) {
-    return res.status(403).json({ message: 'Access denied. Educator role required.' });
+export const authorizeEducator = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  if (
+    !req.body.user ||
+    (req.body.user.role !== UserRole.EDUCATOR &&
+      req.body.user.role !== UserRole.ADMIN)
+  ) {
+    return res
+      .status(403)
+      .json({ message: "Access denied. Educator role required." });
   }
   next();
 };
 
-export const authorizeAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user || req.user.role !== UserRole.ADMIN) {
-    return res.status(403).json({ message: 'Access denied. Admin role required.' });
+export const authorizeAdmin = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  if (!req.body.user || req.body.user.role !== UserRole.ADMIN) {
+    return res
+      .status(403)
+      .json({ message: "Access denied. Admin role required." });
   }
   next();
 };
