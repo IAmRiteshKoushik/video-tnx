@@ -1,6 +1,8 @@
 {
 	"dependencies": {
+		"@prisma/client": "6.5.0",
 		"@tanstack/react-router": "^1.114.17",
+		"prisma": "^6.5.0",
 		"typescript": "^5.8.2"
 	},
 	"devDependencies": {
