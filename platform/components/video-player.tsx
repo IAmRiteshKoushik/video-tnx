@@ -37,8 +37,10 @@ export default function VideoPlayer({
           src={resolution === "480p" ? videoUrl480p : videoUrl720p}
           className="h-full w-full"
           controls
-          autoPlay={false}
-        />
+          autoPlay={true}
+        >
+          <track kind="captions" />
+        </video>
       </div>
       <div className="flex justify-center gap-4 p-4">
         <Button
