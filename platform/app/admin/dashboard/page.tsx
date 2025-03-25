@@ -14,7 +14,6 @@ import {
 import { GraduationCap, Upload, LogOut, Trash2 } from "lucide-react";
 import { checkAuth, logout } from "@/lib/auth";
 import { getVideos } from "@/lib/azure-storage";
-import { deleteVideoAction } from "@/app/actions/video-actions";
 
 interface Video {
   id: string;
@@ -56,26 +55,6 @@ export default function AdminDashboard() {
   const handleLogout = async () => {
     await logout();
     router.push("/");
-  };
-
-  const handleDeleteVideo = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this video?")) {
-      try {
-        setIsDeleting(id);
-        const result = await deleteVideoAction(id);
-
-        if (result.success) {
-          setVideos(videos.filter((video) => video.id !== id));
-        } else {
-          alert(result.message || "Failed to delete video. Please try again.");
-        }
-      } catch (error) {
-        console.error("Failed to delete video:", error);
-        alert("Failed to delete video. Please try again.");
-      } finally {
-        setIsDeleting(null);
-      }
-    }
   };
 
   if (isLoading) {
@@ -177,7 +156,6 @@ export default function AdminDashboard() {
                     <Button
                       variant="destructive"
                       size="sm"
-                      onClick={() => handleDeleteVideo(video.id)}
                       disabled={isDeleting === video.id}
                       className="gap-2"
                     >

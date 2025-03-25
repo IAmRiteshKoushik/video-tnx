@@ -30,59 +30,29 @@ function getBlobUrl(blobName: string): string {
 interface UploadVideoParams {
   title: string;
   description?: string;
-  video480p: File;
-  video720p: File;
+  videoFile: File;
   thumbnail?: File | null;
 }
 
 export async function uploadVideo(params: UploadVideoParams): Promise<string> {
   try {
     // Generate unique filenames
-    const filename480p = generateUniqueFilename(params.video480p.name);
-    const filename720p = generateUniqueFilename(params.video720p.name);
-    let thumbnailFilename = "";
+    const filename = generateUniqueFilename(params.videoFile.name);
 
-    // Upload 480p video
-    const blockBlobClient480p = getBlockBlobClient(
-      `videos/480p/${filename480p}`,
-    );
-    const arrayBuffer480p = await params.video480p.arrayBuffer();
-    await blockBlobClient480p.uploadData(arrayBuffer480p, {
-      blobHTTPHeaders: { blobContentType: params.video480p.type },
+    // Upload video
+    const blockBlobClient = getBlockBlobClient(`input/${filename}`);
+    const arrayBuffer = await params.videoFile.arrayBuffer();
+    await blockBlobClient.uploadData(arrayBuffer, {
+      blobHTTPHeaders: { blobContentType: params.videoFile.type },
     });
-    const url480p = getBlobUrl(`videos/480p/${filename480p}`);
-
-    // Upload 720p video
-    const blockBlobClient720p = getBlockBlobClient(
-      `videos/720p/${filename720p}`,
-    );
-    const arrayBuffer720p = await params.video720p.arrayBuffer();
-    await blockBlobClient720p.uploadData(arrayBuffer720p, {
-      blobHTTPHeaders: { blobContentType: params.video720p.type },
-    });
-    const url720p = getBlobUrl(`videos/720p/${filename720p}`);
-
-    // Upload thumbnail if provided
-    let thumbnailUrl = "";
-    if (params.thumbnail) {
-      thumbnailFilename = generateUniqueFilename(params.thumbnail.name);
-      const blockBlobClientThumbnail = getBlockBlobClient(
-        `thumbnails/${thumbnailFilename}`,
-      );
-      const arrayBufferThumbnail = await params.thumbnail.arrayBuffer();
-      await blockBlobClientThumbnail.uploadData(arrayBufferThumbnail, {
-        blobHTTPHeaders: { blobContentType: params.thumbnail.type },
-      });
-      thumbnailUrl = getBlobUrl(`thumbnails/${thumbnailFilename}`);
-    }
+    const url = getBlobUrl(`input/${filename}`);
 
     // Save video metadata to database
     const video = await prisma.video.create({
       data: {
         title: params.title,
         description: params.description || "",
-        url480p,
-        url720p,
+        url: url,
       },
     });
 
@@ -118,61 +88,5 @@ export async function getVideoById(id: string) {
   } catch (error) {
     console.error("Error fetching video:", error);
     throw new Error("Failed to fetch video");
-  }
-}
-
-export async function deleteVideo(id: string): Promise<boolean> {
-  try {
-    // First, get the video to find the blob URLs
-    const video = await prisma.video.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    if (!video) {
-      return false;
-    }
-
-    // Extract blob names from URLs
-    const extractBlobName = (url: string) => {
-      const urlObj = new URL(url);
-      return urlObj.pathname.substring(containerName.length + 2); // +2 for the slashes
-    };
-
-    // Delete the blobs from Azure
-    try {
-      // Delete 480p video
-      const blobName480p = extractBlobName(video.url480p);
-      const blockBlobClient480p = getBlockBlobClient(blobName480p);
-      await blockBlobClient480p.delete();
-
-      // Delete 720p video
-      const blobName720p = extractBlobName(video.url720p);
-      const blockBlobClient720p = getBlockBlobClient(blobName720p);
-      await blockBlobClient720p.delete();
-
-      // Delete thumbnail if exists
-      if (video.thumbnailUrl) {
-        const blobNameThumbnail = extractBlobName(video.thumbnailUrl);
-        const blockBlobClientThumbnail = getBlockBlobClient(blobNameThumbnail);
-        await blockBlobClientThumbnail.delete();
-      }
-    } catch (error) {
-      console.error("Error deleting blobs:", error);
-      // Continue with database deletion even if blob deletion fails
-    }
-
-    // Delete from database
-    await prisma.video.delete({
-      where: {
-        id,
-      },
-    });
-
-    return true;
-  } catch (error) {
-    console.error("Error deleting video:", error);
-    throw new Error("Failed to delete video");
   }
 }
