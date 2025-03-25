@@ -27,9 +27,7 @@ export default function UploadPage() {
   const [error, setError] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
-  const video480pRef = useRef<HTMLInputElement>(null);
-  const video720pRef = useRef<HTMLInputElement>(null);
-  const thumbnailRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -54,8 +52,8 @@ export default function UploadPage() {
       return;
     }
 
-    if (!formData.get("video480p") || !formData.get("video720p")) {
-      setError("Please upload both 480p and 720p versions of the video");
+    if (!formData.get("videoFile")) {
+      setError("Please upload the video");
       return;
     }
 
@@ -80,7 +78,6 @@ export default function UploadPage() {
       setUploadProgress(100);
 
       if (result.success) {
-        // Redirect to admin dashboard after successful upload
         setTimeout(() => {
           router.push("/admin/dashboard");
         }, 1000);
@@ -162,9 +159,9 @@ export default function UploadPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="video480p">480p Video File</Label>
+                  <Label htmlFor="videoFile">Video File</Label>
                   <Input
-                    ref={video480pRef}
+                    ref={videoRef}
                     id="video480p"
                     name="video480p"
                     type="file"
@@ -173,39 +170,7 @@ export default function UploadPage() {
                     required
                   />
                   <p className="text-xs text-muted-foreground">
-                    Upload the 480p version of your video (MP4 or WebM format)
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="video720p">720p Video File</Label>
-                  <Input
-                    ref={video720pRef}
-                    id="video720p"
-                    name="video720p"
-                    type="file"
-                    accept="video/mp4,video/webm"
-                    disabled={isUploading}
-                    required
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Upload the 720p version of your video (MP4 or WebM format)
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="thumbnail">Thumbnail Image (Optional)</Label>
-                  <Input
-                    ref={thumbnailRef}
-                    id="thumbnail"
-                    name="thumbnail"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    disabled={isUploading}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Upload a thumbnail image for your video (JPEG, PNG, or WebP
-                    format)
+                    Upload your HD quality video
                   </p>
                 </div>
 

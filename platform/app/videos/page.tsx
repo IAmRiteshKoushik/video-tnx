@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getVideos } from "@/lib/azure-storage";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { GraduationCap, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const revalidate = 60; // Revalidate this page every 60 seconds
 
@@ -15,7 +15,6 @@ export default async function VideosPage() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <GraduationCap className="h-6 w-6" />
               <span className="text-xl font-bold">EduVids</span>
             </Link>
           </div>
@@ -62,10 +61,7 @@ export default async function VideosPage() {
                   <Card className="overflow-hidden transition-all hover:shadow-md">
                     <div className="aspect-video bg-muted">
                       <img
-                        src={
-                          video.thumbnailUrl ||
-                          "/placeholder.svg?height=200&width=300"
-                        }
+                        src={"/thumbnail.jpg"}
                         alt={video.title}
                         className="h-full w-full object-cover"
                       />

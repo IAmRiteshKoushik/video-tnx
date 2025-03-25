@@ -3,8 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 import { prisma } from "./prisma";
 
 // Get connection string and container name from environment variables
-const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING || "";
-const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME || "";
+const connectionString =
+  process.env.AZURE_STORAGE_CONNECTION_STRING || "http://localhost:3000/";
+const containerName =
+  process.env.AZURE_STORAGE_CONTAINER_NAME || "http://localhost:3000/";
 
 // Create the BlobServiceClient
 const blobServiceClient =

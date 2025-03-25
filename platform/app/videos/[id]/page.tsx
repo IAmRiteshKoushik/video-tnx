@@ -53,8 +53,8 @@ export default async function VideoPage({ params }: VideoPageProps) {
             <h1 className="text-3xl font-bold">{video.title}</h1>
             <div className="overflow-hidden rounded-lg border">
               <VideoPlayer
-                videoUrl480p={video.url480p}
-                videoUrl720p={video.url720p}
+                videoUrl480p={video.url480p as string}
+                videoUrl720p={video.url720p as string}
               />
             </div>
             {video.description && (
