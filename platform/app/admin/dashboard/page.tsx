@@ -129,8 +129,7 @@ export default function AdminDashboard() {
                   <div className="aspect-video bg-muted">
                     <img
                       src={
-                        video.thumbnailUrl ||
-                        "/placeholder.svg?height=200&width=300"
+                        "/thumbnail.jpg"
                       }
                       alt={video.title}
                       className="h-full w-full object-cover"

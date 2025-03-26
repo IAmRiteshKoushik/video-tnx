@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: cloud-postgres
+    environment:
+      POSTGRES_DATABASE: lms-video
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    restart: on-failure

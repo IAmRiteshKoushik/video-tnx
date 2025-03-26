@@ -1,12 +1,10 @@
+"use server";
 import { BlobServiceClient, type BlockBlobClient } from "@azure/storage-blob";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "./prisma";
-
 // Get connection string and container name from environment variables
-const connectionString =
-  process.env.AZURE_STORAGE_CONNECTION_STRING || "http://localhost:3000/";
-const containerName =
-  process.env.AZURE_STORAGE_CONTAINER_NAME || "http://localhost:3000/";
+const connectionString = process.env.AZURE_CONNECTION_STRING as string;
+const containerName = "temprawvideocasestudy";
 
 // Create the BlobServiceClient
 const blobServiceClient =
@@ -24,11 +22,6 @@ function generateUniqueFilename(originalFilename: string): string {
   return `${uuidv4()}.${extension}`;
 }
 
-// Helper function to get a blob URL
-function getBlobUrl(blobName: string): string {
-  return `${containerClient.url}/${blobName}`;
-}
-
 interface UploadVideoParams {
   title: string;
   description?: string;
@@ -42,12 +35,12 @@ export async function uploadVideo(params: UploadVideoParams): Promise<string> {
     const filename = generateUniqueFilename(params.videoFile.name);
 
     // Upload video
-    const blockBlobClient = getBlockBlobClient(`input/${filename}`);
+    const blockBlobClient = getBlockBlobClient(`${filename}`);
     const arrayBuffer = await params.videoFile.arrayBuffer();
     await blockBlobClient.uploadData(arrayBuffer, {
       blobHTTPHeaders: { blobContentType: params.videoFile.type },
     });
-    const url = getBlobUrl(`input/${filename}`);
+    const url = `https://samstorageaccount2004.blob.core.windows.net/temprawvideocasestudy/${filename}`;
 
     // Save video metadata to database
     const video = await prisma.video.create({
@@ -55,6 +48,8 @@ export async function uploadVideo(params: UploadVideoParams): Promise<string> {
         title: params.title,
         description: params.description || "",
         url: url,
+        url480p: `https://samstorageaccount2004.blob.core.windows.net/prodcontainer/480p-transcoded-${filename}`,
+        url720p: `https://samstorageaccount2004.blob.core.windows.net/prodcontainer/720p-transcoded-${filename}`,
       },
     });
 

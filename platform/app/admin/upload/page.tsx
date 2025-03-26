@@ -163,7 +163,7 @@ export default function UploadPage() {
                   <Input
                     ref={videoRef}
                     id="video480p"
-                    name="video480p"
+                    name="videoFile"
                     type="file"
                     accept="video/mp4,video/webm"
                     disabled={isUploading}
